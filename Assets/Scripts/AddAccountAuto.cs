@@ -12,6 +12,9 @@ public class AddAccountAuto : MonoBehaviour
 
     public void AddNewLine()
     {
-        GameObject line = Instantiate(AccountLine, ContentObject);
+        if (lines >= TransactionManager.Instance.GetAccountCount())
+            return;
+        Instantiate(AccountLine, ContentObject);
+        lines++;
     }
 }

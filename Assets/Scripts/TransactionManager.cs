@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,12 +16,14 @@ public class TransactionManager : MonoBehaviour
         }
     }
     [SerializeField]
-    public GameObject TableRow;
-    public Transform ScrollParent;
+    private GameObject TableRow;
+    [SerializeField]
+    private Transform ScrollParent;
     private List<Transaction> transactions = new List<Transaction>();
     private List<Row> rows = new List<Row>();
-    private List<string> Accounts = new List<string>();
+    private List<string> accounts = new List<string>();
     private List<string> TransactionTypes = new List<string>();
+    private Dictionary<String, Automation> automations = new Dictionary<string, Automation>();
     public delegate void OnAccountNumberChangeDelegate(int newCount);
     public event OnAccountNumberChangeDelegate OnAccountNumberChange;
     public delegate void OnTypeNumberChangeDelegate(int newCount);
@@ -36,7 +39,7 @@ public class TransactionManager : MonoBehaviour
         transactions.Add(t);
         SortBy(SortingMethod);
     }
-    public void DisplayTable()
+    private void DisplayTable()
     {
         if (rows.Count < transactions.Count)
         {
@@ -58,7 +61,7 @@ public class TransactionManager : MonoBehaviour
             }
         }
     }
-    public void SortBy(int i)
+    private void SortBy(int i)
     {
         switch (i)
         {
@@ -109,16 +112,16 @@ public class TransactionManager : MonoBehaviour
     {
         if (TransactionTypes.Contains(account.text))
             return;
-        Accounts.Add(account.text);
+        accounts.Add(account.text);
         account.text = "";
-        OnAccountNumberChange(Accounts.Count);
+        OnAccountNumberChange(accounts.Count);
     }
     public void RemoveAccount(TMP_Dropdown account)
     {
-        string accountName = account.options[account.value].text;
-        if (Accounts.Contains(accountName))
-            Accounts.Remove(accountName);
-        OnAccountNumberChange(Accounts.Count);
+        var accountName = account.options[account.value].text;
+        if (accounts.Contains(accountName))
+            accounts.Remove(accountName);
+        OnAccountNumberChange(accounts.Count);
     }
     public void AddType(TMP_InputField transactionType)
     {
@@ -130,7 +133,7 @@ public class TransactionManager : MonoBehaviour
     }
     public void RemoveType(TMP_Dropdown transactionType)
     {
-        string typeName = transactionType.options[transactionType.value].text;
+        var typeName = transactionType.options[transactionType.value].text;
         if (TransactionTypes.Contains(typeName))
             TransactionTypes.Remove(typeName);
         OnTypeNumberChange(TransactionTypes.Count);
@@ -138,11 +141,28 @@ public class TransactionManager : MonoBehaviour
 
     public List<string> GetAccounts()
     {
-        return Accounts;
+        return accounts;
     }
 
     public List<string> GetTypes()
     {
         return TransactionTypes;
+    }
+
+    public int GetAccountCount()
+    {
+        return accounts.Count;
+    }
+
+    public int GetTypeCount()
+    {
+        return TransactionTypes.Count;
+    }
+
+    public void AddAutomation(string typeName, Automation auto)
+    {
+        if (automations.ContainsKey(typeName))
+            automations.Remove(typeName);
+        automations.Add(typeName, auto);
     }
 }

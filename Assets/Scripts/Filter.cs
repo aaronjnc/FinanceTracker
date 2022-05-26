@@ -13,21 +13,21 @@ public class Filter : MonoBehaviour
         }
     }
     [HideInInspector]
-    public int DayFilter = -1;
+    public int dayFilter = -1;
     [HideInInspector]
-    public int MonthFilter = -1;
+    public int monthFilter = -1;
     [HideInInspector]
-    public int YearFilter = -1;
+    public int yearFilter = -1;
     [HideInInspector]
-    public int GreaterFilter = -1;
+    public int greaterFilter = -1;
     [HideInInspector]
-    public int LessFilter = -1;
+    public int lessFilter = -1;
     [HideInInspector]
-    public int EqualFilter = -1;
+    public int equalFilter = -1;
     [HideInInspector]
-    public string AccountFilter = "";
+    public string accountFilter = "";
     [HideInInspector]
-    public string TypeFilter = "";
+    public string typeFilter = "";
     private void Awake()
     {
         _instance = this;

@@ -8,32 +8,32 @@ using System;
 public class AddTransaction : MonoBehaviour
 {
     [SerializeField]
-    private TMP_InputField DateField;
+    private TMP_InputField dateField;
     [SerializeField]
-    private TMP_InputField NameField;
+    private TMP_InputField nameField;
     [SerializeField]
-    private TMP_InputField AmountField;
+    private TMP_InputField amountField;
     [SerializeField]
-    private TMP_Dropdown AccountField;
+    private TMP_Dropdown accountField;
     [SerializeField]
-    private TMP_Dropdown TypeField;
+    private TMP_Dropdown typeField;
 
     public void AddTheTransaction()
     {
         DateTime date;
-        if (!DateTime.TryParse(DateField.text, out date))
+        if (!DateTime.TryParse(dateField.text, out date))
         {
             //Debug.LogError("Invalid Date/Time");
         }
         double amount;
-        if (!double.TryParse(AmountField.text, out amount))
+        if (!double.TryParse(amountField.text, out amount))
         {
             Debug.LogError("Invalid amount");
         }
-        if (NameField.text.Equals(""))
+        if (nameField.text.Equals(""))
             Debug.LogError("Enter a valid name");
-        Transaction newTransaction = new Transaction(DateField.text, NameField.text, amount,
-            AccountField.options[AccountField.value].text, TypeField.options[TypeField.value].text);
+        Transaction newTransaction = new Transaction(dateField.text, nameField.text, amount,
+            accountField.options[accountField.value].text, typeField.options[typeField.value].text);
         TransactionManager.Instance.AddTransaction(newTransaction);
     }
 }
