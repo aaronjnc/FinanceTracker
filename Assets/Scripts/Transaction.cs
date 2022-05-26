@@ -110,35 +110,35 @@ public class Transaction
     public bool FilterTransaction()
     {
         Filter f = Filter.Instance;
-        if (f.DayFilter != -1 && f.DayFilter != GetDay())
+        if (f.dayFilter != -1 && f.dayFilter != GetDay())
         {
             return false;
         }
-        else if (f.MonthFilter != -1 && f.MonthFilter != GetMonth())
+        else if (f.monthFilter != -1 && f.monthFilter != GetMonth())
         {
             return false;
         }
-        else if (f.YearFilter != -1 && f.YearFilter != GetYear())
+        else if (f.yearFilter != -1 && f.yearFilter != GetYear())
         {
             return false;
         }
-        else if (f.GreaterFilter != -1 && f.GreaterFilter < Amount)
+        else if (f.greaterFilter != -1 && f.greaterFilter < Amount)
         {
             return false;
         }
-        else if (f.LessFilter != -1 && f.LessFilter > Amount)
+        else if (f.lessFilter != -1 && f.lessFilter > Amount)
         {
             return false;
         }
-        else if (f.EqualFilter != -1 && f.EqualFilter != Amount)
+        else if (f.equalFilter != -1 && f.equalFilter != Amount)
         {
             return false;
         }
-        else if (!f.AccountFilter.Equals("") && !f.AccountFilter.Equals(Account))
+        else if (!f.accountFilter.Equals("") && !f.accountFilter.Equals(Account))
         {
             return false;
         }
-        else if (!f.TypeFilter.Equals("") && !f.TypeFilter.Equals(TransactionType))
+        else if (!f.typeFilter.Equals("") && !f.typeFilter.Equals(TransactionType))
         {
             return false;
         }

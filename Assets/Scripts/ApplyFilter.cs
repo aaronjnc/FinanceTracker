@@ -23,7 +23,7 @@ public class ApplyFilter : MonoBehaviour
         InputField,
     }
     [SerializeField]
-    private FilterValueType m_ValueType;
+    private FilterValueType valueType;
     [SerializeField]
     private FilterType filter;
     private TMP_InputField input;
@@ -31,7 +31,7 @@ public class ApplyFilter : MonoBehaviour
 
     private void Awake()
     {
-        if (m_ValueType == FilterValueType.InputField)
+        if (valueType == FilterValueType.InputField)
             input = GetComponent<TMP_InputField>();
         else
             dropdown = GetComponent<TMP_Dropdown>();
@@ -40,35 +40,35 @@ public class ApplyFilter : MonoBehaviour
     public void AddFilter()
     {
         string value;
-        if (m_ValueType == FilterValueType.InputField)
+        if (valueType == FilterValueType.InputField)
             value = input.text;
         else
             value = dropdown.options[dropdown.value].text;
         switch (filter)
         {
             case FilterType.Day:
-                Filter.Instance.DayFilter = int.Parse(value);
+                Filter.Instance.dayFilter = int.Parse(value);
                 break;
             case FilterType.Month:
-                Filter.Instance.MonthFilter = int.Parse(value);
+                Filter.Instance.monthFilter = int.Parse(value);
                 break;
             case FilterType.Year:
-                Filter.Instance.YearFilter = int.Parse(value);
+                Filter.Instance.yearFilter = int.Parse(value);
                 break;
             case FilterType.Greater:
-                Filter.Instance.GreaterFilter = int.Parse(value);
+                Filter.Instance.greaterFilter = int.Parse(value);
                 break;
             case FilterType.Less:
-                Filter.Instance.LessFilter = int.Parse(value);
+                Filter.Instance.lessFilter = int.Parse(value);
                 break;
             case FilterType.Equal:
-                Filter.Instance.EqualFilter = int.Parse(value);
+                Filter.Instance.equalFilter = int.Parse(value);
                 break;
             case FilterType.Account:
-                Filter.Instance.AccountFilter = value;
+                Filter.Instance.accountFilter = value;
                 break;
             case FilterType.Type:
-                Filter.Instance.TypeFilter = value;
+                Filter.Instance.typeFilter = value;
                 break;
         }
         TransactionManager.Instance.AddFilter();

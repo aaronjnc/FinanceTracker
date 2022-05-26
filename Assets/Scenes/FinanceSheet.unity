@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 21721500}
   - component: {fileID: 21721499}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Overview
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -330,7 +330,7 @@ RectTransform:
   - {fileID: 791841146}
   - {fileID: 356352422}
   m_Father: {fileID: 854238225}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -401,14 +401,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abea1b7997a6e9d438507546bfc7fe38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DayFilter: -1
-  MonthFilter: -1
-  YearFilter: -1
-  GreaterFilter: -1
-  LessFilter: -1
-  EqualFilter: -1
-  AccountFilter: 
-  TypeFilter: 
+  dayFilter: -1
+  monthFilter: -1
+  yearFilter: -1
+  greaterFilter: -1
+  lessFilter: -1
+  equalFilter: -1
+  accountFilter: 
+  typeFilter: 
 --- !u!1 &24102491
 GameObject:
   m_ObjectHideFlags: 0
@@ -2885,7 +2885,7 @@ GameObject:
   - component: {fileID: 173658033}
   - component: {fileID: 173658036}
   m_Layer: 5
-  m_Name: Dropdown (1)
+  m_Name: AutoType
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4639,11 +4639,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e6b8dc88a704a4586ef9ad6fe9a858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DateField: {fileID: 1648533712}
-  NameField: {fileID: 1827631057}
-  AmountField: {fileID: 1854606080}
-  AccountField: {fileID: 1862750594}
-  TypeField: {fileID: 371104437}
+  dateField: {fileID: 1648533712}
+  nameField: {fileID: 1827631057}
+  amountField: {fileID: 1854606080}
+  accountField: {fileID: 1862750594}
+  typeField: {fileID: 371104437}
 --- !u!1 &288081063
 GameObject:
   m_ObjectHideFlags: 0
@@ -4934,7 +4934,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 1
+  valueType: 0
   filter: 3
 --- !u!1 &301193585
 GameObject:
@@ -8326,7 +8326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 0
+  valueType: 0
   filter: 6
 --- !u!114 &496723569
 MonoBehaviour:
@@ -8451,7 +8451,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0.0000102343965}
-  m_SizeDelta: {x: -664.9838, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &512250375
 MonoBehaviour:
@@ -9100,6 +9100,7 @@ GameObject:
   - component: {fileID: 561348090}
   - component: {fileID: 561348089}
   - component: {fileID: 561348088}
+  - component: {fileID: 561348091}
   m_Layer: 5
   m_Name: Dropdown
   m_TagString: Untagged
@@ -9181,15 +9182,23 @@ MonoBehaviour:
     m_Options:
     - m_Text: Overall
       m_Image: {fileID: 0}
-    - m_Text: Checkings
-      m_Image: {fileID: 0}
-    - m_Text: Savings
-      m_Image: {fileID: 0}
-    - m_Text: Fixed Bills
+    - m_Text: Automations
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 561348091}
+        m_TargetAssemblyTypeName: PageSwitcher, Assembly-CSharp
+        m_MethodName: SwitchPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &561348089
 MonoBehaviour:
@@ -9229,6 +9238,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561348086}
   m_CullTransparentMesh: 1
+--- !u!114 &561348091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561348086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be0939b7faac61c4d9cf63d598cc0242, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panels:
+  - {fileID: 21721495}
+  - {fileID: 2006738721}
 --- !u!1 &562261944
 GameObject:
   m_ObjectHideFlags: 0
@@ -11407,7 +11431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 0
+  valueType: 0
   filter: 1
 --- !u!1 &667484782
 GameObject:
@@ -11786,7 +11810,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 0
+  valueType: 0
   filter: 2
 --- !u!1 &688045553
 GameObject:
@@ -12441,7 +12465,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 1
+  valueType: 0
   filter: 4
 --- !u!1 &718597849
 GameObject:
@@ -15405,8 +15429,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 2006738722}
   - {fileID: 21721496}
+  - {fileID: 2006738722}
   - {fileID: 561348087}
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -16372,7 +16396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 1
+  valueType: 0
   filter: 5
 --- !u!1 &906340340
 GameObject:
@@ -18477,7 +18501,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 0
+  valueType: 0
   filter: 7
 --- !u!114 &1073534916
 MonoBehaviour:
@@ -21757,7 +21781,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -32454,7 +32478,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2006738722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32471,7 +32495,7 @@ RectTransform:
   - {fileID: 816598821}
   - {fileID: 1324383149}
   m_Father: {fileID: 854238225}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -33597,6 +33621,7 @@ GameObject:
   - component: {fileID: 2067609670}
   - component: {fileID: 2067609669}
   - component: {fileID: 2067609668}
+  - component: {fileID: 2067609671}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -33706,6 +33731,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2067609666}
   m_CullTransparentMesh: 1
+--- !u!114 &2067609671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2067609666}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc4b98c2f26167448a23d3110d22061, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeName: {fileID: 173658033}
+  contentObject: {fileID: 512250373}
 --- !u!1 &2069723738
 GameObject:
   m_ObjectHideFlags: 0
@@ -34457,7 +34496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e816555cfa820724da53d328a07d2dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ValueType: 0
+  valueType: 0
   filter: 0
 --- !u!1 &2120122295
 GameObject:
