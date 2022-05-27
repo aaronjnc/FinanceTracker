@@ -17,16 +17,22 @@ public class UpdateChoices : MonoBehaviour
     {
         dropdownList = GetComponent<TMP_Dropdown>();
         if (choiceType == ChoiceType.Account)
+        {
             TransactionManager.Instance.OnAccountNumberChange += OnAccountChange;
+            OnAccountChange(0);
+        }
         else
+        {
             TransactionManager.Instance.OnTypeNumberChange += OnTypeChange;
+            OnTypeChange(0);
+        }
     }
 
     private void OnAccountChange(int count)
     {
         dropdownList.ClearOptions();
         List<string> accounts = TransactionManager.Instance.GetAccounts();
-        accounts.Insert(0, "");
+        dropdownList.AddOptions(new List<string>() { "" });
         dropdownList.AddOptions(accounts);
     }
 
@@ -34,6 +40,22 @@ public class UpdateChoices : MonoBehaviour
     {
         dropdownList.ClearOptions();
         List<string> types = TransactionManager.Instance.GetTypes();
+        dropdownList.AddOptions(new List<string>() { "" });
         dropdownList.AddOptions(types);
+    }
+
+    private void OnEnable()
+    {
+        if (dropdownList != null)
+        {
+            if (choiceType == ChoiceType.Account)
+            {
+                OnAccountChange(0);
+            }
+            else
+            {
+                OnTypeChange(0);
+            }
+        }
     }
 }

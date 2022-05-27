@@ -144,4 +144,14 @@ public class Transaction
         }
         return true;
     }
+
+    public override string ToString()
+    {
+        return GetDate() + "|" + GetDescription() + "|" + GetAmount() + "|" + GetAccount() + "|" + GetTransactionType();
+    }
+
+    public string GetYearAndMonth()
+    {
+        return GetYear() + " " + GetMonth();
+    }
 }

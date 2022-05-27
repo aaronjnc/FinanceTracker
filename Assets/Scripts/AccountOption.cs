@@ -12,6 +12,11 @@ public class AccountOption : MonoBehaviour
     [SerializeField] 
     private TMP_InputField amount;
 
+    public bool IsValid()
+    {
+        return GetAccountName() != "" && amount.text != "";
+    }
+
     public string GetAccountName()
     {
         return accountName.options[accountName.value].text;
@@ -19,7 +24,7 @@ public class AccountOption : MonoBehaviour
 
     public bool IsPercentage()
     {
-        return numberType.options[accountName.value].text.Equals("Percent");
+        return numberType.options[numberType.value].text.Equals("Percent");
     }
 
     public int GetAmount()

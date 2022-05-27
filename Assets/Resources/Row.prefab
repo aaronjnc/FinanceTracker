@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 3257334701309453069}
   - component: {fileID: 5211285658661122757}
   - component: {fileID: 2714015023996408827}
+  - component: {fileID: 1085244812771465906}
   m_Layer: 5
-  m_Name: Amount
+  m_Name: Account
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 370.07996, y: -49.99997}
+  m_AnchoredPosition: {x: 320, y: -30}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5211285658661122757
@@ -79,6 +80,35 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Checkings
+--- !u!114 &1085244812771465906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3238051515897240470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6247929692742915408}
+          m_TargetAssemblyTypeName: Row, Assembly-CSharp
+          m_MethodName: SelectRow
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3773643788908702642
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +120,7 @@ GameObject:
   - component: {fileID: 5591779133248074977}
   - component: {fileID: 200048937225912867}
   - component: {fileID: 6015656202403682179}
+  - component: {fileID: 1608598434299600115}
   m_Layer: 5
   m_Name: Name
   m_TagString: Untagged
@@ -113,8 +144,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 149.99997, y: -49.99997}
-  m_SizeDelta: {x: 220.08, y: 30}
+  m_AnchoredPosition: {x: 100, y: -30}
+  m_SizeDelta: {x: 220, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &200048937225912867
 CanvasRenderer:
@@ -160,6 +191,35 @@ MonoBehaviour:
   m_Text: 'Name
 
     e'
+--- !u!114 &1608598434299600115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3773643788908702642}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6247929692742915408}
+          m_TargetAssemblyTypeName: Row, Assembly-CSharp
+          m_MethodName: SelectRow
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &3841391681413579351
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,8 +231,9 @@ GameObject:
   - component: {fileID: 4675038745168920532}
   - component: {fileID: 7714888811684799472}
   - component: {fileID: 8549257169531143302}
+  - component: {fileID: 5381180362870703132}
   m_Layer: 5
-  m_Name: Account
+  m_Name: Amount
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -194,7 +255,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 470.08002, y: -49.99997}
+  m_AnchoredPosition: {x: 420, y: -30}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &7714888811684799472
@@ -239,6 +300,35 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Amount
+--- !u!114 &5381180362870703132
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3841391681413579351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6247929692742915408}
+          m_TargetAssemblyTypeName: Row, Assembly-CSharp
+          m_MethodName: SelectRow
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6702323221715115137
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +340,7 @@ GameObject:
   - component: {fileID: 6702323221715115138}
   - component: {fileID: 6702323221715115164}
   - component: {fileID: 6702323221715115139}
+  - component: {fileID: 2377061244310928791}
   m_Layer: 5
   m_Name: Date
   m_TagString: Untagged
@@ -273,7 +364,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.00006, y: -49.99997}
+  m_AnchoredPosition: {x: 0, y: -30}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &6702323221715115164
@@ -318,6 +409,35 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 05/20/2022
+--- !u!114 &2377061244310928791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6702323221715115137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6247929692742915408}
+          m_TargetAssemblyTypeName: Row, Assembly-CSharp
+          m_MethodName: SelectRow
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7418524387148877741
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +449,7 @@ GameObject:
   - component: {fileID: 6624569506971907217}
   - component: {fileID: 5034673963034515450}
   - component: {fileID: 4958217126615253312}
+  - component: {fileID: 6237580221278157939}
   m_Layer: 5
   m_Name: Type
   m_TagString: Untagged
@@ -352,7 +473,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 570.08, y: -49.99997}
+  m_AnchoredPosition: {x: 520, y: -30}
   m_SizeDelta: {x: 100, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &5034673963034515450
@@ -397,6 +518,35 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Type
+--- !u!114 &6237580221278157939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7418524387148877741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6247929692742915408}
+          m_TargetAssemblyTypeName: Row, Assembly-CSharp
+          m_MethodName: SelectRow
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &7478743458085987266
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +557,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5353005992056612506}
   - component: {fileID: 6247929692742915408}
+  - component: {fileID: 7698781643471251400}
+  - component: {fileID: 1910425135278449672}
   m_Layer: 5
   m_Name: Row
   m_TagString: Untagged
@@ -436,7 +588,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 620, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6247929692742915408
 MonoBehaviour:
@@ -455,3 +607,42 @@ MonoBehaviour:
   Amount: {fileID: 2714015023996408827}
   Account: {fileID: 8549257169531143302}
   TransactionType: {fileID: 4958217126615253312}
+  backgroundHighlight: {fileID: 1910425135278449672}
+--- !u!222 &7698781643471251400
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478743458085987266}
+  m_CullTransparentMesh: 1
+--- !u!114 &1910425135278449672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7478743458085987266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.83708644, g: 0.82452834, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1

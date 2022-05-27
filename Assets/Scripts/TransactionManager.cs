@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Text;
+using System.IO;
 
 public class TransactionManager : MonoBehaviour
 {
@@ -19,7 +21,8 @@ public class TransactionManager : MonoBehaviour
     private GameObject TableRow;
     [SerializeField]
     private Transform ScrollParent;
-    private List<Transaction> transactions = new List<Transaction>();
+    //private List<Transaction> transactions = new List<Transaction>();
+    private Dictionary<string, List<Transaction>> transactionsDictionary = new Dictionary<string, List<Transaction>>();
     private List<Row> rows = new List<Row>();
     private List<string> accounts = new List<string>();
     private List<string> TransactionTypes = new List<string>();
@@ -34,55 +37,85 @@ public class TransactionManager : MonoBehaviour
         _instance = this;
     }
 
+    public void UpdateTransactions(Transaction t)
+    {
+        AddTransaction(t);
+        if (automations.ContainsKey(t.GetTransactionType()))
+        {
+            List<Transaction> transactions = automations[t.GetTransactionType()].CreateTransactions(t);
+            foreach (Transaction transaction in transactions)
+            {
+                AddTransaction(transaction);
+            }
+        }
+        SortBy(SortingMethod);
+    }
     public void AddTransaction(Transaction t)
     {
-        transactions.Add(t);
-        SortBy(SortingMethod);
+        if (!transactionsDictionary.ContainsKey(t.GetYearAndMonth()))
+        {
+            transactionsDictionary.Add(t.GetYearAndMonth(), new List<Transaction>());
+        }
+        transactionsDictionary[t.GetYearAndMonth()].Add(t);
     }
     private void DisplayTable()
     {
-        if (rows.Count < transactions.Count)
+        int i = 0;
+        foreach (string key in transactionsDictionary.Keys)
         {
-            for (int i = rows.Count; i < transactions.Count; i++)
+            foreach (Transaction t in transactionsDictionary[key])
             {
-                GameObject row = Instantiate(TableRow, ScrollParent);
-                rows.Add(row.GetComponent<Row>());
+                if (i >= rows.Count)
+                    AddNewRow();
+                if (t.FilterTransaction())
+                {
+                    rows[i].Display(t, i);
+                }
+                else
+                {
+                    rows[i].Disable();
+                }
+                i++;
             }
         }
-        for (int i = 0; i < transactions.Count; i++)
-        {
-            if (transactions[i].FilterTransaction())
-            {
-                rows[i].Display(transactions[i], i);
-            }
-            else
-            {
-                rows[i].Disable();
-            }
-        }
+    }
+    public void AddNewRow()
+    {
+        GameObject row = Instantiate(TableRow, ScrollParent);
+        row.transform.localPosition = new Vector3(0, 0, 0);
+        rows.Add(row.GetComponent<Row>());
     }
     private void SortBy(int i)
     {
         switch (i)
         {
             case 0:
-                transactions.Sort(SortByDate);
+                SortAllLists(SortByDate);
                 break;
             case 1:
-                transactions.Sort(SortByDescription);
+                SortAllLists(SortByDescription);
                 break;
             case 2:
-                transactions.Sort(SortByAmount);
+                SortAllLists(SortByAmount);
                 break;
             case 3:
-                transactions.Sort(SortByAccount);
+                SortAllLists(SortByAccount);
                 break;
             case 4:
-                transactions.Sort(SortByType);
+                SortAllLists(SortByType);
                 break;
         }
         SortingMethod = i;
         DisplayTable();
+    }
+
+    private void SortAllLists(Comparison<Transaction> sortBy)
+    {
+        foreach (List<Transaction> v in transactionsDictionary.Values)
+        {
+            v.Sort(sortBy);
+        }
+        throw new NotImplementedException();
     }
     public void AddFilter()
     {
@@ -164,5 +197,53 @@ public class TransactionManager : MonoBehaviour
         if (automations.ContainsKey(typeName))
             automations.Remove(typeName);
         automations.Add(typeName, auto);
+    }
+
+    public void SaveMonths(string path)
+    {
+        foreach (string key in transactionsDictionary.Keys)
+        {
+            StringBuilder monthString = new StringBuilder();
+            foreach (Transaction t in transactionsDictionary[key])
+            {
+                monthString.AppendLine(t.ToString());
+            }
+            string newPath = Path.Combine(path, key + ".txt");
+            File.WriteAllText(newPath, monthString.ToString());
+        }
+    }
+
+    public string GetAccountsString()
+    {
+        StringBuilder accountString = new StringBuilder();
+        foreach (string account in accounts)
+        {
+            accountString.AppendLine(account);
+        }
+        return accountString.ToString();
+    }
+
+    public string GetTypesString()
+    {
+        StringBuilder typeString = new StringBuilder();
+        foreach (string transactionType in TransactionTypes)
+        {
+            typeString.AppendLine(transactionType);
+        }
+        return typeString.ToString();
+    }
+
+    public void SaveInfo()
+    {
+        SaveInformation.Save();
+    }
+
+    public void SaveAutomations(string path)
+    {
+        foreach (string key in automations.Keys)
+        {
+            string newPath = Path.Combine(path, key + ".txt");
+            File.WriteAllText(newPath, automations[key].ToString());
+        }
     }
 }
