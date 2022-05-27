@@ -15,6 +15,8 @@ public class ImplementAutomation : MonoBehaviour
         Automation auto = new Automation();
         foreach (AccountOption a in contentObject.GetComponentsInChildren<AccountOption>())
         {
+            if (!a.IsValid())
+                continue;
             auto.AddRow(a.GetAccountName(), a.IsPercentage(), a.GetAmount());
         }
         TransactionManager.Instance.AddAutomation(typeName.options[typeName.value].text, auto);

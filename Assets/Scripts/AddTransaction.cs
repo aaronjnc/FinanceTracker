@@ -23,7 +23,7 @@ public class AddTransaction : MonoBehaviour
         DateTime date;
         if (!DateTime.TryParse(dateField.text, out date))
         {
-            //Debug.LogError("Invalid Date/Time");
+            Debug.LogError("Invalid Date/Time");
         }
         double amount;
         if (!double.TryParse(amountField.text, out amount))
@@ -34,6 +34,6 @@ public class AddTransaction : MonoBehaviour
             Debug.LogError("Enter a valid name");
         Transaction newTransaction = new Transaction(dateField.text, nameField.text, amount,
             accountField.options[accountField.value].text, typeField.options[typeField.value].text);
-        TransactionManager.Instance.AddTransaction(newTransaction);
+        TransactionManager.Instance.UpdateTransactions(newTransaction);
     }
 }

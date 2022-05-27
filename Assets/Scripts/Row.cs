@@ -16,17 +16,34 @@ public class Row : MonoBehaviour
     private Text Account;
     [SerializeField]
     private Text TransactionType;
-    private int ListID;
+    [SerializeField]
+    private Image backgroundHighlight;
+    private int ListId;
     
     public void Display(Transaction transaction, int id)
     {
-        ListID = id;
+        ListId = id;
         Date.text = transaction.GetDate();
         Desc.text = transaction.GetDescription();
-        Amount.text = transaction.GetAmount().ToString();
+        Amount.text = transaction.GetAmount().ToString("C2");
         Account.text = transaction.GetAccount();
         TransactionType.text = transaction.GetTransactionType();
         Enable();
+    }
+
+    public void SelectRow()
+    {
+        Color c = backgroundHighlight.color;
+        c.a = 255;
+        backgroundHighlight.color = c;
+        GetComponentInParent<ChooseRow>().ChangeRow(this);
+    }
+
+    public void DeselectRow()
+    {
+        Color c = backgroundHighlight.color;
+        c.a = 0;
+        backgroundHighlight.color = c;
     }
 
     public void Disable()
