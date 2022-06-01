@@ -24,10 +24,20 @@ public class Category
 
     public string GetAccountName()
     {
+        return parentAccount.GetAccountName();
+    }
+
+    public Account GetAccount()
+    {
+        return parentAccount;
+    }
+
+    public string GetCategoryName()
+    {
         return categoryName;
     }
 
-    public double GetAccountValue()
+    public double GetCategoryValue()
     {
         return categoryValue;
     }

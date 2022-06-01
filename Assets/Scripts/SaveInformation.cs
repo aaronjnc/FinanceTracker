@@ -34,7 +34,8 @@ public static class SaveInformation
         while (line != null && line != "")
         {
             string[] parts = line.Split('|');
-            Transaction t = new Transaction(parts[0], parts[1], int.Parse(parts[2]), parts[3], parts[4]);
+            Transaction t = new Transaction(parts[0], parts[1], int.Parse(parts[2]), 
+                TransactionManager.Instance.GetCategory(parts[3]), parts[4]);
             TransactionManager.Instance.UpdateTransactions(t);
         }
     }

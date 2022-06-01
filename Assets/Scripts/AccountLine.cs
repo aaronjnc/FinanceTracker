@@ -15,6 +15,7 @@ public class AccountLine : MonoBehaviour
         account = act;
         UpdateName(account.GetAccountName());
         account.OnAccountValueChange += UpdateValue;
+        UpdateValue(account.GetAccountValue());
     }
     public void UpdateName(string accountName)
     {
@@ -22,6 +23,6 @@ public class AccountLine : MonoBehaviour
     }
     public void UpdateValue(double amount)
     {
-        accountTotal.text = amount.ToString();
+        accountTotal.text = amount.ToString("C2");
     }
 }

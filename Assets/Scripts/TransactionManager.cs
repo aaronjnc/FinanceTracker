@@ -146,7 +146,7 @@ public class TransactionManager : MonoBehaviour
     }
     public void AddAccount(TMP_InputField account)
     {
-        if (TransactionTypes.Contains(account.text))
+        if (TransactionTypes.Contains(account.text) || account.text == "")
             return;
         accounts.Add(account.text, new Account(account.text));
         AccountTotals.Instance.AddAccount(accounts[account.text]);
@@ -164,7 +164,7 @@ public class TransactionManager : MonoBehaviour
     }
     public void AddType(TMP_InputField transactionType)
     {
-        if (TransactionTypes.Contains(transactionType.text))
+        if (TransactionTypes.Contains(transactionType.text) || transactionType.text == "")
             return;
         TransactionTypes.Add(transactionType.text);
         transactionType.text = "";
@@ -182,7 +182,7 @@ public class TransactionManager : MonoBehaviour
     {
         TMP_Dropdown accountDropdown = categoryInput.gameObject.GetComponentInChildren<TMP_Dropdown>();
         var categoryName = categoryInput.text;
-        if (categories.ContainsKey(categoryName))
+        if (categories.ContainsKey(categoryName) || categoryName == "")
             return;
         Account act = accounts[accountDropdown.options[accountDropdown.value].text];
         categories.Add(categoryName, new Category(categoryName, act));
@@ -269,6 +269,16 @@ public class TransactionManager : MonoBehaviour
     public void SaveInfo()
     {
         SaveInformation.Save();
+    }
+
+    public Account GetAccount(string account)
+    {
+        return accounts[account];
+    }
+
+    public Category GetCategory(string category)
+    {
+        return categories[category];
     }
 
     public void SaveAutomations(string path)

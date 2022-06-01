@@ -14,7 +14,7 @@ public class AddTransaction : MonoBehaviour
     [SerializeField]
     private TMP_InputField amountField;
     [SerializeField]
-    private TMP_Dropdown accountField;
+    private TMP_Dropdown categoryField;
     [SerializeField]
     private TMP_Dropdown typeField;
 
@@ -33,7 +33,8 @@ public class AddTransaction : MonoBehaviour
         if (nameField.text.Equals(""))
             Debug.LogError("Enter a valid name");
         Transaction newTransaction = new Transaction(dateField.text, nameField.text, amount,
-            accountField.options[accountField.value].text, typeField.options[typeField.value].text);
+            TransactionManager.Instance.GetCategory(categoryField.options[categoryField.value].text), 
+            typeField.options[typeField.value].text);
         TransactionManager.Instance.UpdateTransactions(newTransaction);
     }
 }
