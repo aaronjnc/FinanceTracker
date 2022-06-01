@@ -9,6 +9,7 @@ public class UpdateChoices : MonoBehaviour
     {
         Account,
         TransactionType,
+        Category,
     }
     [SerializeField]
     private ChoiceType choiceType;
@@ -21,10 +22,15 @@ public class UpdateChoices : MonoBehaviour
             TransactionManager.Instance.OnAccountNumberChange += OnAccountChange;
             OnAccountChange(0);
         }
-        else
+        else if (choiceType == ChoiceType.TransactionType)
         {
             TransactionManager.Instance.OnTypeNumberChange += OnTypeChange;
             OnTypeChange(0);
+        }
+        else
+        {
+            TransactionManager.Instance.OnCategoryNumberChange += OnCategoryChange;
+            OnCategoryChange(0);
         }
     }
 
@@ -42,6 +48,14 @@ public class UpdateChoices : MonoBehaviour
         List<string> types = TransactionManager.Instance.GetTypes();
         dropdownList.AddOptions(new List<string>() { "" });
         dropdownList.AddOptions(types);
+    }
+
+    private void OnCategoryChange(int count)
+    {
+        dropdownList.ClearOptions();
+        List<string> categories = TransactionManager.Instance.GetCategories();
+        dropdownList.AddOptions(new List<string>() { "" });
+        dropdownList.AddOptions(categories);
     }
 
     private void OnEnable()

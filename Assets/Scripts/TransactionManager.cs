@@ -24,13 +24,16 @@ public class TransactionManager : MonoBehaviour
     //private List<Transaction> transactions = new List<Transaction>();
     private Dictionary<string, List<Transaction>> transactionsDictionary = new Dictionary<string, List<Transaction>>();
     private List<Row> rows = new List<Row>();
-    private List<string> accounts = new List<string>();
+    private Dictionary<string, Account> accounts = new Dictionary<string, Account>();
     private List<string> TransactionTypes = new List<string>();
-    private Dictionary<String, Automation> automations = new Dictionary<string, Automation>();
+    private Dictionary<string, Category> categories = new Dictionary<string, Category>();
+    private Dictionary<string, Automation> automations = new Dictionary<string, Automation>();
     public delegate void OnAccountNumberChangeDelegate(int newCount);
     public event OnAccountNumberChangeDelegate OnAccountNumberChange;
     public delegate void OnTypeNumberChangeDelegate(int newCount);
     public event OnTypeNumberChangeDelegate OnTypeNumberChange;
+    public delegate void OnCategoryNumberChangeDelegate(int newCount);
+    public event OnCategoryNumberChangeDelegate OnCategoryNumberChange;
     private int SortingMethod = 0;
     private void Awake()
     {
@@ -145,15 +148,18 @@ public class TransactionManager : MonoBehaviour
     {
         if (TransactionTypes.Contains(account.text))
             return;
-        accounts.Add(account.text);
+        accounts.Add(account.text, new Account(account.text));
+        AccountTotals.Instance.AddAccount(accounts[account.text]);
         account.text = "";
         OnAccountNumberChange(accounts.Count);
     }
     public void RemoveAccount(TMP_Dropdown account)
     {
         var accountName = account.options[account.value].text;
-        if (accounts.Contains(accountName))
-            accounts.Remove(accountName);
+        if (!accounts.ContainsKey(accountName))
+            return;
+        accounts.Remove(accountName);
+        AccountTotals.Instance.RemoveAccount(accountName);
         OnAccountNumberChange(accounts.Count);
     }
     public void AddType(TMP_InputField transactionType)
@@ -172,14 +178,41 @@ public class TransactionManager : MonoBehaviour
         OnTypeNumberChange(TransactionTypes.Count);
     }
 
+    public void AddCategory(TMP_InputField categoryInput)
+    {
+        TMP_Dropdown accountDropdown = categoryInput.gameObject.GetComponentInChildren<TMP_Dropdown>();
+        var categoryName = categoryInput.text;
+        if (categories.ContainsKey(categoryName))
+            return;
+        Account act = accounts[accountDropdown.options[accountDropdown.value].text];
+        categories.Add(categoryName, new Category(categoryName, act));
+        categoryInput.text = "";
+        accountDropdown.value = 0;
+        OnCategoryNumberChange(categories.Count);
+    }
+
+    public void RemoveCategory(TMP_Dropdown categoryDropdown)
+    {
+        var categoryName = categoryDropdown.options[categoryDropdown.value].text;
+        if (!categories.ContainsKey(categoryName))
+            return;
+        categories.Remove(categoryName);
+        OnCategoryNumberChange(categories.Count);
+    }
+
     public List<string> GetAccounts()
     {
-        return accounts;
+        return new List<string>(accounts.Keys);
     }
 
     public List<string> GetTypes()
     {
         return TransactionTypes;
+    }
+
+    public List<string> GetCategories()
+    {
+        return new List<string>(categories.Keys);
     }
 
     public int GetAccountCount()
@@ -216,7 +249,7 @@ public class TransactionManager : MonoBehaviour
     public string GetAccountsString()
     {
         StringBuilder accountString = new StringBuilder();
-        foreach (string account in accounts)
+        foreach (string account in accounts.Keys)
         {
             accountString.AppendLine(account);
         }
