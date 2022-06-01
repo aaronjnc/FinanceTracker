@@ -65,7 +65,7 @@ public class ApplyFilter : MonoBehaviour
                 Filter.Instance.equalFilter = int.Parse(value);
                 break;
             case FilterType.Account:
-                Filter.Instance.accountFilter = value;
+                Filter.Instance.categoryFilter = value;
                 break;
             case FilterType.Type:
                 Filter.Instance.typeFilter = value;

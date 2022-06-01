@@ -742,7 +742,7 @@ MonoBehaviour:
   greaterFilter: -1
   lessFilter: -1
   equalFilter: -1
-  accountFilter: 
+  categoryFilter: 
   typeFilter: 
 --- !u!1 &24102491
 GameObject:
@@ -5525,7 +5525,7 @@ MonoBehaviour:
   dateField: {fileID: 1648533712}
   nameField: {fileID: 1827631057}
   amountField: {fileID: 1854606080}
-  accountField: {fileID: 1862750594}
+  categoryField: {fileID: 1862750594}
   typeField: {fileID: 371104437}
 --- !u!1 &288081063
 GameObject:
@@ -20749,6 +20749,7 @@ GameObject:
   - component: {fileID: 943659181}
   - component: {fileID: 943659180}
   - component: {fileID: 943659179}
+  - component: {fileID: 943659182}
   m_Layer: 5
   m_Name: Categories
   m_TagString: Untagged
@@ -20845,6 +20846,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 943659177}
   m_CullTransparentMesh: 1
+--- !u!114 &943659182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 943659177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fa2c1d37a413404ebbf3e91012cb275, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &946398420
 GameObject:
   m_ObjectHideFlags: 0
@@ -21936,6 +21949,7 @@ GameObject:
   - component: {fileID: 1035938373}
   - component: {fileID: 1035938372}
   - component: {fileID: 1035938371}
+  - component: {fileID: 1035938374}
   m_Layer: 5
   m_Name: Accounts
   m_TagString: Untagged
@@ -22034,6 +22048,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1035938369}
   m_CullTransparentMesh: 1
+--- !u!114 &1035938374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1035938369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 410d64c75ca955f439311f3f5b5f873e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accountLinePrefab: {fileID: 2536870448187147757, guid: acb35a1b056eb594c9ac4e66a8086b35, type: 3}
+  contentParent: {fileID: 1653896328}
 --- !u!1 &1039735462
 GameObject:
   m_ObjectHideFlags: 0
@@ -32666,7 +32694,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: -50
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -36368,7 +36396,7 @@ GameObject:
   - component: {fileID: 1862750594}
   - component: {fileID: 1862750597}
   m_Layer: 5
-  m_Name: Accounts
+  m_Name: Categories
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
