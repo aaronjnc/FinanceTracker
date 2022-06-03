@@ -17,7 +17,6 @@ public class Transaction
         this.Amount = Amount;
         category = cat;
         this.TransactionType = TransactionType;
-        category.UpdateAmount(this.Amount);
     }
     public string GetDate()
     {
@@ -160,11 +159,21 @@ public class Transaction
 
     public override string ToString()
     {
-        return GetDate() + "|" + GetDescription() + "|" + GetAmount() + "|" + GetAccount() + "|" + GetTransactionType();
+        return GetDate() + "|" + GetDescription() + "|" + GetAmount() + "|" + GetCategoryName() + "|" + GetTransactionType();
     }
 
     public string GetYearAndMonth()
     {
-        return GetYear() + " " + GetMonth();
+        string month = "";
+        if (GetMonth() < 10)
+            month = "0" + GetMonth();
+        else
+            month += GetMonth();
+        return GetYear() + " " + month;
+    }
+
+    public string GetMonthAndYear()
+    {
+        return MonthDropdownList.Months[GetMonth() - 1] + " " + GetYear();
     }
 }
