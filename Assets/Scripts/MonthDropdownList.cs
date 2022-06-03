@@ -25,4 +25,22 @@ public class MonthDropdownList : MonoBehaviour
     {
         return Months.IndexOf(Month);
     }
+
+    public static string GetMonthAndYear(string yearAndMonth)
+    {
+        int month = int.Parse(yearAndMonth.Split(' ')[1]);
+        string year = yearAndMonth.Split(' ')[0];
+        return Months[month - 1] + " " + year;
+    }
+
+    public static string GetYearAndMonth(string monthAndYear)
+    {
+        string month = monthAndYear.Split(' ')[0];
+        string year = monthAndYear.Split(' ')[1];
+        int monthNum = Months.IndexOf(month) + 1;
+        if (monthNum < 10)
+            return year + " 0" + monthNum;
+        else
+            return year + " " + monthNum;
+    }
 }

@@ -35,12 +35,21 @@ public class TransactionManager : MonoBehaviour
     public event OnCategoryNumberChangeDelegate OnCategoryNumberChange;
     [SerializeField]
     private TextMeshProUGUI totalTextBox;
+    private List<string> loadedMonths = new List<string>();
     private float totalAmount = 0;
     private int SortingMethod = 0;
+    [SerializeField]
+    private TMP_Dropdown monthsDropdown;
     private void Awake()
     {
         _instance = this;
+        monthsDropdown.ClearOptions();
         totalTextBox.text = totalAmount.ToString("C2");
+    }
+
+    private void Start()
+    {
+        SaveInformation.Load();
     }
 
     public void UpdateTransactions(Transaction t)
@@ -56,6 +65,15 @@ public class TransactionManager : MonoBehaviour
         }
         SortBy(SortingMethod);
     }
+    public void LoadTransaction(Transaction t)
+    {
+        if (!transactionsDictionary.ContainsKey(t.GetYearAndMonth()))
+        {
+            transactionsDictionary.Add(t.GetYearAndMonth(), new List<Transaction>());
+        }
+        transactionsDictionary[t.GetYearAndMonth()].Add(t);
+        SortBy(SortingMethod);
+    }
     public void AddTransaction(Transaction t)
     {
         if (!transactionsDictionary.ContainsKey(t.GetYearAndMonth()))
@@ -63,6 +81,7 @@ public class TransactionManager : MonoBehaviour
             transactionsDictionary.Add(t.GetYearAndMonth(), new List<Transaction>());
         }
         transactionsDictionary[t.GetYearAndMonth()].Add(t);
+        t.GetCategory().UpdateAmount(t.GetAmount());
         totalAmount += (float)t.GetAmount();
         totalTextBox.text = totalAmount.ToString("C2");
     }
@@ -150,12 +169,17 @@ public class TransactionManager : MonoBehaviour
     }
     public void AddAccount(TMP_InputField account)
     {
-        if (TransactionTypes.Contains(account.text) || account.text == "")
-            return;
-        accounts.Add(account.text, new Account(account.text));
-        AccountTotals.Instance.AddAccount(accounts[account.text]);
+        AddAccount(account.text);
         account.text = "";
-        OnAccountNumberChange(accounts.Count);
+    }
+    public void AddAccount(string actName)
+    {
+        if (accounts.ContainsKey(actName) || actName.Equals(""))
+            return;
+        accounts.Add(actName, new Account(actName));
+        AccountTotals.Instance.AddAccount(accounts[actName]);
+        if (OnAccountNumberChange != null)
+            OnAccountNumberChange(accounts.Count);
     }
     public void RemoveAccount(TMP_Dropdown account)
     {
@@ -164,42 +188,54 @@ public class TransactionManager : MonoBehaviour
             return;
         accounts.Remove(accountName);
         AccountTotals.Instance.RemoveAccount(accountName);
-        OnAccountNumberChange(accounts.Count);
+        if (OnAccountNumberChange != null)
+            OnAccountNumberChange(accounts.Count);
     }
     public void AddType(TMP_InputField transactionType)
     {
-        if (TransactionTypes.Contains(transactionType.text) || transactionType.text == "")
-            return;
-        TransactionTypes.Add(transactionType.text);
+        AddType(transactionType.text);
         transactionType.text = "";
-        OnTypeNumberChange(TransactionTypes.Count);
+    }
+    public void AddType(string typeName)
+    {
+        if (TransactionTypes.Contains(typeName) || typeName == "")
+            return;
+        TransactionTypes.Add(typeName);
+        if (OnTypeNumberChange != null)
+            OnTypeNumberChange(TransactionTypes.Count);
     }
     public void RemoveType(TMP_Dropdown transactionType)
     {
         var typeName = transactionType.options[transactionType.value].text;
         if (TransactionTypes.Contains(typeName))
             TransactionTypes.Remove(typeName);
-        OnTypeNumberChange(TransactionTypes.Count);
+        if (OnTypeNumberChange != null)
+            OnTypeNumberChange(TransactionTypes.Count);
     }
 
     public void AddCategory(TMP_InputField categoryInput)
     {
         TMP_Dropdown accountDropdown = categoryInput.gameObject.GetComponentInChildren<TMP_Dropdown>();
         var categoryName = categoryInput.text;
-        if (categories.ContainsKey(categoryName) || categoryName == "")
-        {
-            return;
-        }
-        Account act = accounts[accountDropdown.options[accountDropdown.value].text];
-        if (act == null)
-            return;
-        categories.Add(categoryName, new Category(categoryName, act));
+        var accountName = accountDropdown.options[accountDropdown.value].text;
+        AddCategory(categoryName, accountName);
         categoryInput.text = "";
         accountDropdown.value = 0;
-        CategoryTotals.Instance.AddCategory(categories[categoryName]);
-        OnCategoryNumberChange(categories.Count);
     }
-
+    public Category AddCategory(string categoryName, string accountName)
+    {
+        if (categories.ContainsKey(categoryName) || categoryName == "")
+            return null;
+        if (accountName.Equals("") || !accounts.ContainsKey(accountName))
+            return null;
+        Account act = GetAccount(accountName);
+        Category newCat = new Category(categoryName, act);
+        categories.Add(categoryName, newCat);
+        CategoryTotals.Instance.AddCategory(newCat);
+        if (OnCategoryNumberChange != null)
+            OnCategoryNumberChange(categories.Count);
+        return newCat;
+    }
     public void RemoveCategory(TMP_Dropdown categoryDropdown)
     {
         var categoryName = categoryDropdown.options[categoryDropdown.value].text;
@@ -207,7 +243,8 @@ public class TransactionManager : MonoBehaviour
             return;
         categories.Remove(categoryName);
         CategoryTotals.Instance.RemoveCategory(categoryName);
-        OnCategoryNumberChange(categories.Count);
+        if (OnCategoryNumberChange != null)
+            OnCategoryNumberChange(categories.Count);
     }
 
     public List<string> GetAccounts()
@@ -261,9 +298,20 @@ public class TransactionManager : MonoBehaviour
         StringBuilder accountString = new StringBuilder();
         foreach (string account in accounts.Keys)
         {
-            accountString.AppendLine(account + " " + accounts[account].GetAccountValue());
+            accountString.AppendLine(account);
         }
         return accountString.ToString();
+    }
+
+    public string GetCategoriesString()
+    {
+        StringBuilder categoryString = new StringBuilder();
+        foreach (string category in categories.Keys)
+        {
+            Category cat = categories[category];
+            categoryString.AppendLine(category + " " + cat.GetAccountName() + " " + categories[category].GetCategoryValue());
+        }
+        return categoryString.ToString();
     }
 
     public string GetTypesString()
@@ -298,5 +346,25 @@ public class TransactionManager : MonoBehaviour
             string newPath = Path.Combine(path, key + ".txt");
             File.WriteAllText(newPath, automations[key].ToString());
         }
+    }
+
+    public void AddMonths(List<string> months)
+    {
+        monthsDropdown.AddOptions(months);
+    }
+
+    public void LoadMonth()
+    {
+        string monthAndYear = monthsDropdown.options[monthsDropdown.value].text;
+        string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
+        monthsDropdown.options.RemoveAt(monthsDropdown.value);
+        monthsDropdown.RefreshShownValue();
+        SaveInformation.LoadMonth(yearAndMonth);
+    }
+
+    public void LoadMoney(double amount)
+    {
+        totalAmount += (float)amount;
+        totalTextBox.text = totalAmount.ToString("C2");
     }
 }
