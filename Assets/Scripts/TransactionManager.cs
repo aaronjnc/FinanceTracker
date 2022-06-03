@@ -21,7 +21,6 @@ public class TransactionManager : MonoBehaviour
     private GameObject TableRow;
     [SerializeField]
     private Transform ScrollParent;
-    //private List<Transaction> transactions = new List<Transaction>();
     private Dictionary<string, List<Transaction>> transactionsDictionary = new Dictionary<string, List<Transaction>>();
     private List<Row> rows = new List<Row>();
     private Dictionary<string, Account> accounts = new Dictionary<string, Account>();
@@ -34,10 +33,14 @@ public class TransactionManager : MonoBehaviour
     public event OnTypeNumberChangeDelegate OnTypeNumberChange;
     public delegate void OnCategoryNumberChangeDelegate(int newCount);
     public event OnCategoryNumberChangeDelegate OnCategoryNumberChange;
+    [SerializeField]
+    private TextMeshProUGUI totalTextBox;
+    private float totalAmount = 0;
     private int SortingMethod = 0;
     private void Awake()
     {
         _instance = this;
+        totalTextBox.text = totalAmount.ToString("C2");
     }
 
     public void UpdateTransactions(Transaction t)
@@ -60,6 +63,8 @@ public class TransactionManager : MonoBehaviour
             transactionsDictionary.Add(t.GetYearAndMonth(), new List<Transaction>());
         }
         transactionsDictionary[t.GetYearAndMonth()].Add(t);
+        totalAmount += (float)t.GetAmount();
+        totalTextBox.text = totalAmount.ToString("C2");
     }
     private void DisplayTable()
     {
@@ -118,7 +123,6 @@ public class TransactionManager : MonoBehaviour
         {
             v.Sort(sortBy);
         }
-        throw new NotImplementedException();
     }
     public void AddFilter()
     {
@@ -183,11 +187,16 @@ public class TransactionManager : MonoBehaviour
         TMP_Dropdown accountDropdown = categoryInput.gameObject.GetComponentInChildren<TMP_Dropdown>();
         var categoryName = categoryInput.text;
         if (categories.ContainsKey(categoryName) || categoryName == "")
+        {
             return;
+        }
         Account act = accounts[accountDropdown.options[accountDropdown.value].text];
+        if (act == null)
+            return;
         categories.Add(categoryName, new Category(categoryName, act));
         categoryInput.text = "";
         accountDropdown.value = 0;
+        CategoryTotals.Instance.AddCategory(categories[categoryName]);
         OnCategoryNumberChange(categories.Count);
     }
 
@@ -197,6 +206,7 @@ public class TransactionManager : MonoBehaviour
         if (!categories.ContainsKey(categoryName))
             return;
         categories.Remove(categoryName);
+        CategoryTotals.Instance.RemoveCategory(categoryName);
         OnCategoryNumberChange(categories.Count);
     }
 
@@ -251,7 +261,7 @@ public class TransactionManager : MonoBehaviour
         StringBuilder accountString = new StringBuilder();
         foreach (string account in accounts.Keys)
         {
-            accountString.AppendLine(account);
+            accountString.AppendLine(account + " " + accounts[account].GetAccountValue());
         }
         return accountString.ToString();
     }

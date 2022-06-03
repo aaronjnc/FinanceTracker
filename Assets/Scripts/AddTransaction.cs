@@ -36,5 +36,15 @@ public class AddTransaction : MonoBehaviour
             TransactionManager.Instance.GetCategory(categoryField.options[categoryField.value].text), 
             typeField.options[typeField.value].text);
         TransactionManager.Instance.UpdateTransactions(newTransaction);
+        ClearFields();
+    }
+
+    private void ClearFields()
+    {
+        dateField.text = "";
+        nameField.text = "";
+        amountField.text = "";
+        categoryField.value = 0;
+        typeField.value = 0;
     }
 }

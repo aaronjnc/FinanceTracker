@@ -1,18 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CategoryLine : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private TextMeshProUGUI categoryTotal;
+    [SerializeField]
+    private TextMeshProUGUI categoryNameField;
+    private Category category;
+    public void SetCategory(Category cat)
     {
-        
+        category = cat;
+        UpdateName(category.GetCategoryName());
+        category.OnCategoryValueChange += UpdateValue;
+        UpdateValue(category.GetCategoryValue());
     }
-
-    // Update is called once per frame
-    void Update()
+    public void UpdateName(string categoryName)
     {
-        
+        categoryNameField.text = categoryName;
+    }
+    public void UpdateValue(double amount)
+    {
+        categoryTotal.text = amount.ToString("C2");
     }
 }
