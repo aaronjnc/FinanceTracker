@@ -724,6 +724,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TableRow: {fileID: 7478743458085987266, guid: b30042f2c63ad434c9fe739d14ab3354, type: 3}
   ScrollParent: {fileID: 723978188}
+  totalTextBox: {fileID: 115193410}
 --- !u!114 &21721500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2623,7 +2624,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: $0.00
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -10176,7 +10177,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 0
-  m_Spacing: 0
+  m_Spacing: -50
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -20858,6 +20859,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fa2c1d37a413404ebbf3e91012cb275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  categoryLinePrefab: {fileID: 865995896043533575, guid: f74d0dd0465e6a148a6d78c72c38d0b2, type: 3}
+  contentParent: {fileID: 493160502}
 --- !u!1 &946398420
 GameObject:
   m_ObjectHideFlags: 0
@@ -36540,7 +36543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47363f11424454f458a8bfb470fefb0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  choiceType: 0
+  choiceType: 2
 --- !u!1 &1866597755
 GameObject:
   m_ObjectHideFlags: 0

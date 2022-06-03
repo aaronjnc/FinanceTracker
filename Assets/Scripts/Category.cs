@@ -19,6 +19,7 @@ public class Category
     public void UpdateAmount(double amount)
     {
         categoryValue += amount;
+        parentAccount.UpdateAmount(amount);
         OnCategoryValueChange(categoryValue);
     }
 

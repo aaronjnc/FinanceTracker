@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2714015023996408827}
   - component: {fileID: 1085244812771465906}
   m_Layer: 5
-  m_Name: Account
+  m_Name: Category
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -604,8 +604,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Date: {fileID: 6702323221715115139}
   Desc: {fileID: 6015656202403682179}
-  Amount: {fileID: 2714015023996408827}
-  Account: {fileID: 8549257169531143302}
+  Amount: {fileID: 8549257169531143302}
+  Category: {fileID: 2714015023996408827}
   TransactionType: {fileID: 4958217126615253312}
   backgroundHighlight: {fileID: 1910425135278449672}
 --- !u!222 &7698781643471251400

@@ -17,6 +17,7 @@ public class Transaction
         this.Amount = Amount;
         category = cat;
         this.TransactionType = TransactionType;
+        category.UpdateAmount(this.Amount);
     }
     public string GetDate()
     {
