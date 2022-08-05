@@ -31,6 +31,7 @@ public static class SaveInformation
         LoadCategories(path);
         LoadTypes(path);
         LoadMonthList(path);
+        LoadAutomations(path);
     }
 
     private static void LoadMonthList(string monthPath)
@@ -113,6 +114,18 @@ public static class SaveInformation
                 TransactionManager.Instance.GetCategory(parts[3]), parts[4]);
             TransactionManager.Instance.LoadTransaction(t);
             line = stringReader.ReadLine();
+        }
+    }
+
+    private static void LoadAutomations(string path)
+    {
+        path = Path.Combine(path, "automations");
+        if (!Directory.Exists(path))
+            return;
+        string[] automations = Directory.GetFiles(path);
+        for (int i = 0; i < automations.Length; i++)
+        {
+
         }
     }
 }

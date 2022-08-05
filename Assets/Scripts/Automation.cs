@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using static AccountOption;
 
 public class Automation
 {
     private List<string> category = new List<string>();
-    private List<bool> percent = new List<bool>();
+    private List<AutomationType> automationType = new List<AutomationType>();
     private List<double> amounts = new List<double>();
 
-    public void AddRow(string account, bool percentage, double amount)
+    public void AddRow(string account, AutomationType percentage, double amount)
     {
         category.Add(account);
-        percent.Add(percentage);
+        automationType.Add(percentage);
         amounts.Add(amount/100);
     }
 
@@ -23,11 +24,11 @@ public class Automation
         for (int i = 0; i < category.Count; i++)
         {
             double value = 0;
-            if (percent[i])
+            if (automationType[i] == AutomationType.Percentage)
             {
                 value = leftoverMoney * amounts[i];
             }
-            else
+            else if (automationType[i] == AutomationType.Amount)
             {
                 if (leftoverMoney > amounts[i])
                 {
@@ -37,6 +38,10 @@ public class Automation
                 {
                     value = amounts[i];
                 }
+            }
+            else
+            {
+                value = leftoverMoney;
             }
             leftoverMoney -= value;
             Transaction t = new Transaction(original.GetDate(), "Automatic Transfer", value, 
@@ -53,7 +58,7 @@ public class Automation
         StringBuilder stringRep = new StringBuilder();
         for (int i = 0; i < category.Count; i++)
         {
-            stringRep.Append(category[i] + "|" + percent[i] + "|" + amounts[i]);
+            stringRep.Append(category[i] + "|" + automationType[i].ToString() + "|" + amounts[i]);
         }
         return stringRep.ToString();
     }
