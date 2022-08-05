@@ -339,6 +339,11 @@ public class TransactionManager : MonoBehaviour
         return categories[category];
     }
 
+    public int GetCategoryCount()
+    {
+        return categories.Count;
+    }
+
     public void SaveAutomations(string path)
     {
         foreach (string key in automations.Keys)

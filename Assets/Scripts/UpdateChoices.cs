@@ -66,9 +66,13 @@ public class UpdateChoices : MonoBehaviour
             {
                 OnAccountChange(0);
             }
-            else
+            else if (choiceType == ChoiceType.TransactionType)
             {
                 OnTypeChange(0);
+            }
+            else
+            {
+                OnCategoryChange(0);
             }
         }
     }
