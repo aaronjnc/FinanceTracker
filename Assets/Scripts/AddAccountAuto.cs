@@ -12,7 +12,7 @@ public class AddAccountAuto : MonoBehaviour
 
     public void AddNewLine()
     {
-        if (lines >= TransactionManager.Instance.GetAccountCount())
+        if (lines >= TransactionManager.Instance.GetCategoryCount())
             return;
         Instantiate(AccountLine, ContentObject);
         lines++;

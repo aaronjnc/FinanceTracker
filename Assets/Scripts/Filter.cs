@@ -25,7 +25,7 @@ public class Filter : MonoBehaviour
     [HideInInspector]
     public int equalFilter = -1;
     [HideInInspector]
-    public string accountFilter = "";
+    public string categoryFilter = "";
     [HideInInspector]
     public string typeFilter = "";
     private void Awake()

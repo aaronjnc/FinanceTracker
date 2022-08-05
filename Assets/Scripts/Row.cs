@@ -13,7 +13,7 @@ public class Row : MonoBehaviour
     [SerializeField]
     private Text Amount;
     [SerializeField]
-    private Text Account;
+    private Text Category;
     [SerializeField]
     private Text TransactionType;
     [SerializeField]
@@ -26,7 +26,7 @@ public class Row : MonoBehaviour
         Date.text = transaction.GetDate();
         Desc.text = transaction.GetDescription();
         Amount.text = transaction.GetAmount().ToString("C2");
-        Account.text = transaction.GetAccount();
+        Category.text = transaction.GetCategoryName();
         TransactionType.text = transaction.GetTransactionType();
         Enable();
     }

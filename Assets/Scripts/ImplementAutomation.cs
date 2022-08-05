@@ -17,7 +17,7 @@ public class ImplementAutomation : MonoBehaviour
         {
             if (!a.IsValid())
                 continue;
-            auto.AddRow(a.GetAccountName(), a.IsPercentage(), a.GetAmount());
+            auto.AddRow(a.GetAccountName(), a.GetAutomationType(), a.GetAmount());
         }
         TransactionManager.Instance.AddAutomation(typeName.options[typeName.value].text, auto);
     }

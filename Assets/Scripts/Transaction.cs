@@ -7,15 +7,15 @@ public class Transaction
     private string Date;
     private string Description;
     private double Amount;
-    private string Account;
+    private Category category;
     private string TransactionType;
-    public Transaction(string Date, string Description, double Amount, string Account,
+    public Transaction(string Date, string Description, double Amount, Category cat,
         string TransactionType)
     {
         this.Date = Date;
         this.Description = Description;
         this.Amount = Amount;
-        this.Account = Account;
+        category = cat;
         this.TransactionType = TransactionType;
     }
     public string GetDate()
@@ -30,9 +30,21 @@ public class Transaction
     {
         return Amount;
     }
-    public string GetAccount()
+    public string GetAccountName()
     {
-        return Account;
+        return category.GetAccountName();
+    }
+    public Account GetAccount()
+    {
+        return category.GetAccount();
+    }
+    public Category GetCategory()
+    {
+        return category;
+    }
+    public string GetCategoryName()
+    {
+        return category.GetCategoryName();
     }
     public string GetTransactionType()
     {
@@ -99,7 +111,7 @@ public class Transaction
 
     public int CompareAccount(Transaction t2)
     {
-        return Account.CompareTo(t2.Account);
+        return t2.GetAccountName().CompareTo(t2.GetAccountName());
     }
 
     public int CompareType(Transaction t2)
@@ -134,7 +146,7 @@ public class Transaction
         {
             return false;
         }
-        else if (!f.accountFilter.Equals("") && !f.accountFilter.Equals(Account))
+        else if (!f.categoryFilter.Equals("") && !f.categoryFilter.Equals(category))
         {
             return false;
         }
@@ -147,11 +159,21 @@ public class Transaction
 
     public override string ToString()
     {
-        return GetDate() + "|" + GetDescription() + "|" + GetAmount() + "|" + GetAccount() + "|" + GetTransactionType();
+        return GetDate() + "|" + GetDescription() + "|" + GetAmount() + "|" + GetCategoryName() + "|" + GetTransactionType();
     }
 
     public string GetYearAndMonth()
     {
-        return GetYear() + " " + GetMonth();
+        string month = "";
+        if (GetMonth() < 10)
+            month = "0" + GetMonth();
+        else
+            month += GetMonth();
+        return GetYear() + " " + month;
+    }
+
+    public string GetMonthAndYear()
+    {
+        return MonthDropdownList.Months[GetMonth() - 1] + " " + GetYear();
     }
 }
