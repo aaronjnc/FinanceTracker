@@ -7,14 +7,14 @@ public class AddAccountAuto : MonoBehaviour
     [SerializeField]
     private Transform ContentObject;
     [SerializeField]
-    private GameObject AccountLine;
+    private GameObject AutomationLine;
     int lines = 0;
 
     public void AddNewLine()
     {
         if (lines >= TransactionManager.Instance.GetCategoryCount())
             return;
-        Instantiate(AccountLine, ContentObject);
+        Instantiate(AutomationLine, ContentObject);
         lines++;
     }
 }

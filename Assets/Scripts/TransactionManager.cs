@@ -36,10 +36,14 @@ public class TransactionManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI totalTextBox;
     private List<string> loadedMonths = new List<string>();
+    private List<string> loadedYears = new List<string>();
     private float totalAmount = 0;
     private int SortingMethod = 0;
     [SerializeField]
     private TMP_Dropdown monthsDropdown;
+    private Row chosenRow;
+    [SerializeField]
+    private Button RemoveRow;
     private void Awake()
     {
         _instance = this;
@@ -50,18 +54,24 @@ public class TransactionManager : MonoBehaviour
     private void Start()
     {
         SaveInformation.Load();
+        AddCategory("Automated", "Automated");
     }
 
     public void UpdateTransactions(Transaction t)
     {
-        AddTransaction(t);
         if (automations.ContainsKey(t.GetTransactionType()))
         {
             List<Transaction> transactions = automations[t.GetTransactionType()].CreateTransactions(t);
+            t.SetAsAutomation();
+            AddTransaction(t);
             foreach (Transaction transaction in transactions)
             {
                 AddTransaction(transaction);
             }
+        }
+        else
+        {
+            AddTransaction(t);
         }
         SortBy(SortingMethod);
     }
@@ -81,9 +91,12 @@ public class TransactionManager : MonoBehaviour
             transactionsDictionary.Add(t.GetYearAndMonth(), new List<Transaction>());
         }
         transactionsDictionary[t.GetYearAndMonth()].Add(t);
-        t.GetCategory().UpdateAmount(t.GetAmount());
-        totalAmount += (float)t.GetAmount();
-        totalTextBox.text = totalAmount.ToString("C2");
+        if (!t.GetCategoryName().Equals("Automated"))
+        {
+            t.GetCategory().UpdateAmount(t.GetAmount());
+            totalAmount += (float)t.GetAmount();
+            totalTextBox.text = totalAmount.ToString("C2");
+        }
     }
     private void DisplayTable()
     {
@@ -181,13 +194,16 @@ public class TransactionManager : MonoBehaviour
         if (OnAccountNumberChange != null)
             OnAccountNumberChange(accounts.Count);
     }
-    public void RemoveAccount(TMP_Dropdown account)
+    public void MoveAccount(GameObject parentObject)
     {
-        var accountName = account.options[account.value].text;
-        if (!accounts.ContainsKey(accountName))
-            return;
-        accounts.Remove(accountName);
-        AccountTotals.Instance.RemoveAccount(accountName);
+        TMP_Dropdown[] childrenDropdown = parentObject.GetComponentsInChildren<TMP_Dropdown>();
+        string account1Name = childrenDropdown[0].options[childrenDropdown[0].value].text;
+        string account2Name = childrenDropdown[1].options[childrenDropdown[1].value].text;
+        Account oldAccount = accounts[account1Name];
+        Account account = accounts[account2Name];
+        oldAccount.MoveCategories(account);
+        AccountTotals.Instance.SwitchAccount(accounts[account1Name], account);
+        accounts.Remove(account1Name);
         if (OnAccountNumberChange != null)
             OnAccountNumberChange(accounts.Count);
     }
@@ -212,7 +228,6 @@ public class TransactionManager : MonoBehaviour
         if (OnTypeNumberChange != null)
             OnTypeNumberChange(TransactionTypes.Count);
     }
-
     public void AddCategory(TMP_InputField categoryInput)
     {
         TMP_Dropdown accountDropdown = categoryInput.gameObject.GetComponentInChildren<TMP_Dropdown>();
@@ -226,9 +241,12 @@ public class TransactionManager : MonoBehaviour
     {
         if (categories.ContainsKey(categoryName) || categoryName == "")
             return null;
-        if (accountName.Equals("") || !accounts.ContainsKey(accountName))
+        if (accountName.Equals("") || 
+            (!accounts.ContainsKey(accountName) && !accountName.Equals("Automated")))
             return null;
-        Account act = GetAccount(accountName);
+        Account act = null;
+        if (!accountName.Equals("Automated"))
+            act = GetAccount(accountName);
         Category newCat = new Category(categoryName, act);
         categories.Add(categoryName, newCat);
         CategoryTotals.Instance.AddCategory(newCat);
@@ -236,6 +254,40 @@ public class TransactionManager : MonoBehaviour
             OnCategoryNumberChange(categories.Count);
         return newCat;
     }
+
+    public void MoveCategory(GameObject parentObject)
+    {
+        TMP_Dropdown[] dropdowns = parentObject.GetComponentsInChildren<TMP_Dropdown>();
+        string originalCategory = dropdowns[0].options[dropdowns[0].value].text;
+        string newCategory = dropdowns[1].options[dropdowns[1].value].text;
+        Category c = GetCategory(newCategory);
+        LoadAllMonths();
+        foreach (List<Transaction> transactions in transactionsDictionary.Values)
+        {
+            foreach(Transaction t in transactions)
+            {
+                if (t.GetCategoryName().Equals(originalCategory))
+                {
+                    t.SetCategory(c);
+                    c.UpdateAmount(t.GetAmount());
+                }
+            }
+        }
+        categories.Remove(originalCategory);
+        CategoryTotals.Instance.RemoveCategory(originalCategory);
+        if (OnCategoryNumberChange != null)
+            OnCategoryNumberChange(categories.Count);
+    }
+
+    public void EditCategory(GameObject parentObject)
+    {
+        TMP_Dropdown[] dropdowns = parentObject.GetComponentsInChildren<TMP_Dropdown>();
+        string category = dropdowns[0].options[dropdowns[0].value].text;
+        string account = dropdowns[1].options[dropdowns[1].value].text;
+        Category c = GetCategory(category);
+        c.ChangeAccount(GetAccount(account));
+    }
+
     public void RemoveCategory(TMP_Dropdown categoryDropdown)
     {
         var categoryName = categoryDropdown.options[categoryDropdown.value].text;
@@ -274,9 +326,14 @@ public class TransactionManager : MonoBehaviour
 
     public void AddAutomation(string typeName, Automation auto)
     {
+        RemoveAutomation(typeName);
+        automations.Add(typeName, auto);
+    }
+
+    public void RemoveAutomation(string typeName)
+    {
         if (automations.ContainsKey(typeName))
             automations.Remove(typeName);
-        automations.Add(typeName, auto);
     }
 
     public void SaveMonths(string path)
@@ -308,6 +365,8 @@ public class TransactionManager : MonoBehaviour
         StringBuilder categoryString = new StringBuilder();
         foreach (string category in categories.Keys)
         {
+            if (category.Equals("Automated"))
+                continue;
             Category cat = categories[category];
             categoryString.AppendLine(category + " " + cat.GetAccountName() + " " + categories[category].GetCategoryValue());
         }
@@ -344,6 +403,13 @@ public class TransactionManager : MonoBehaviour
         return categories.Count;
     }
 
+    public Automation GetAutomation(string typeName)
+    {
+        if (automations.ContainsKey(typeName))
+            return automations[typeName];
+        return null;
+    }
+
     public void SaveAutomations(string path)
     {
         foreach (string key in automations.Keys)
@@ -361,15 +427,51 @@ public class TransactionManager : MonoBehaviour
     public void LoadMonth()
     {
         string monthAndYear = monthsDropdown.options[monthsDropdown.value].text;
-        string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
+        LoadMonth(monthAndYear, monthsDropdown.value);
+        /*string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
         monthsDropdown.options.RemoveAt(monthsDropdown.value);
+        monthsDropdown.RefreshShownValue();
+        SaveInformation.LoadMonth(yearAndMonth);*/
+    }
+
+    private void LoadMonth(string monthAndYear, int value)
+    {
+        string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
+        monthsDropdown.options.RemoveAt(value);
         monthsDropdown.RefreshShownValue();
         SaveInformation.LoadMonth(yearAndMonth);
     }
 
+    public void LoadAllMonths()
+    {
+        for (int i = 0; i < monthsDropdown.options.Count; i++)
+        {
+            string monthAndYear = monthsDropdown.options[i].text;
+            LoadMonth(monthAndYear, i);
+            i--;
+        }
+    }
+    
     public void LoadMoney(double amount)
     {
         totalAmount += (float)amount;
         totalTextBox.text = totalAmount.ToString("C2");
+    }
+
+    public void ChooseRow(Row r)
+    {
+        chosenRow = r;
+        RemoveRow.interactable = true;
+    }
+
+    public void DeleteRow()
+    {
+        if (chosenRow == null)
+            return;
+        Transaction t = chosenRow.GetTransaction();
+        Destroy(chosenRow.gameObject);
+        chosenRow = null;
+        transactionsDictionary[t.GetYearAndMonth()].Remove(t);
+        RemoveRow.interactable = false;
     }
 }
