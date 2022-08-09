@@ -13,19 +13,28 @@ public class Category
     {
         this.categoryName = categoryName;
         this.parentAccount = parentAccount;
+        parentAccount?.AddCategory(this);
     }
-
 
     public void UpdateAmount(double amount)
     {
         categoryValue += amount;
-        parentAccount.UpdateAmount(amount);
+        parentAccount.UpdateAmount();
         OnCategoryValueChange(categoryValue);
     }
 
     public string GetAccountName()
     {
         return parentAccount.GetAccountName();
+    }
+
+    public void ChangeAccount(Account newAccount)
+    {
+        if (newAccount == parentAccount)
+            return;
+        parentAccount.RemoveCategory(this);
+        parentAccount = newAccount;
+        parentAccount.AddCategory(this);
     }
 
     public Account GetAccount()

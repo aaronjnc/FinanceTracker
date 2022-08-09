@@ -32,6 +32,15 @@ public class AccountTotals : MonoBehaviour
         accountLines[accountName].SetAccount(account);
     }
 
+    public void SwitchAccount(Account original, Account newAccount)
+    {
+        string accountName = original.GetAccountName();
+        if (!accountLines.ContainsKey(accountName))
+            return;
+        accountLines[accountName].SetAccount(newAccount);
+        RemoveAccount(accountName);
+    }
+
     public void RemoveAccount(string accountName)
     {
         if (!accountLines.ContainsKey(accountName))

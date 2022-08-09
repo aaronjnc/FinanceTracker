@@ -6,17 +6,24 @@ public class Transaction
 {
     private string Date;
     private string Description;
-    private double Amount;
+    public double Amount;
     private Category category;
     private string TransactionType;
-    public Transaction(string Date, string Description, double Amount, Category cat,
+    public delegate void OnCategoryChangeDelegate(Category newCategory);
+    public event OnCategoryChangeDelegate OnCategoryChange;
+
+    public Transaction(string Date, string Description, double Amount, Category c,
         string TransactionType)
     {
         this.Date = Date;
         this.Description = Description;
         this.Amount = Amount;
-        category = cat;
+        category = c;
         this.TransactionType = TransactionType;
+    }
+    public void SetDate(string Date)
+    {
+        this.Date = Date;
     }
     public string GetDate()
     {
@@ -63,6 +70,13 @@ public class Transaction
     public int GetDay()
     {
         return int.Parse(Date.Split('/')[0]);
+    }
+
+    public void SetCategory(Category c)
+    {
+        this.category = c;
+        if (OnCategoryChange != null)
+            OnCategoryChange(c);
     }
     public int CompareDate(Transaction t2)
     {
@@ -170,6 +184,11 @@ public class Transaction
         else
             month += GetMonth();
         return GetYear() + " " + month;
+    }
+
+    public void SetAsAutomation()
+    {
+        category = TransactionManager.Instance.GetCategory("Automated");
     }
 
     public string GetMonthAndYear()

@@ -54,6 +54,7 @@ public class UpdateChoices : MonoBehaviour
     {
         dropdownList.ClearOptions();
         List<string> categories = TransactionManager.Instance.GetCategories();
+        categories.Remove("Automated");
         dropdownList.AddOptions(new List<string>() { "" });
         dropdownList.AddOptions(categories);
     }

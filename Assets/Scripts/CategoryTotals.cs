@@ -25,7 +25,7 @@ public class CategoryTotals : MonoBehaviour
     public void AddCategory(Category category)
     {
         string categoryName = category.GetCategoryName();
-        if (categoryLines.ContainsKey(categoryName))
+        if (categoryLines.ContainsKey(categoryName) || categoryName.Equals("Automated"))
             return;
         GameObject categoryLine = Instantiate(categoryLinePrefab, contentParent);
         categoryLines.Add(categoryName, categoryLine.GetComponent<CategoryLine>());

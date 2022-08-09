@@ -10,11 +10,20 @@ public class Automation
     private List<AutomationType> automationType = new List<AutomationType>();
     private List<double> amounts = new List<double>();
 
-    public void AddRow(string account, AutomationType percentage, double amount)
+    public void AddRow(string c, AutomationType percentage, double amount)
     {
-        category.Add(account);
+        category.Add(c);
         automationType.Add(percentage);
         amounts.Add(amount/100);
+    }
+
+    public void SpawnRows(Transform contentParent, GameObject automationRow)
+    {
+        for (int i = 0; i < category.Count && i < automationType.Count && i < amounts.Count; i++)
+        {
+            GameObject newRow = GameObject.Instantiate(automationRow, contentParent);
+            newRow.GetComponent<AccountOption>().BeginSetValues(category[i], automationType[i], amounts[i]);
+        }
     }
 
     public List<Transaction> CreateTransactions(Transaction original)
@@ -26,18 +35,11 @@ public class Automation
             double value = 0;
             if (automationType[i] == AutomationType.Percentage)
             {
-                value = leftoverMoney * amounts[i];
+                value = Mathf.Clamp((float)(original.GetAmount() * amounts[i]), 0, (float)leftoverMoney);
             }
             else if (automationType[i] == AutomationType.Amount)
             {
-                if (leftoverMoney > amounts[i])
-                {
-                    value = leftoverMoney;
-                }
-                else
-                {
-                    value = amounts[i];
-                }
+                value = leftoverMoney > amounts[i] ? leftoverMoney : amounts[i];
             }
             else
             {

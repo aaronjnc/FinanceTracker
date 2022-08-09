@@ -19,9 +19,12 @@ public class Row : MonoBehaviour
     [SerializeField]
     private Image backgroundHighlight;
     private int ListId;
+    private Transaction t;
     
     public void Display(Transaction transaction, int id)
     {
+        t = transaction;
+        t.OnCategoryChange += UpdateCategory;
         ListId = id;
         Date.text = transaction.GetDate();
         Desc.text = transaction.GetDescription();
@@ -36,7 +39,7 @@ public class Row : MonoBehaviour
         Color c = backgroundHighlight.color;
         c.a = 255;
         backgroundHighlight.color = c;
-        GetComponentInParent<ChooseRow>().ChangeRow(this);
+        TransactionManager.Instance.ChooseRow(this);
     }
 
     public void DeselectRow()
@@ -51,8 +54,18 @@ public class Row : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public Transaction GetTransaction()
+    {
+        return t;
+    }
+
     public void Enable()
     {
         gameObject.SetActive(true);
+    }
+
+    public void UpdateCategory(Category c)
+    {
+        Category.text = c.GetCategoryName();
     }
 }
