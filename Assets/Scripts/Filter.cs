@@ -28,8 +28,15 @@ public class Filter : MonoBehaviour
     public string categoryFilter = "";
     [HideInInspector]
     public string typeFilter = "";
+    [SerializeField]
+    private Transform contentObject;
     private void Awake()
     {
         _instance = this;
+    }
+
+    public GameObject AddRow(GameObject filterRow)
+    {
+        return Instantiate(filterRow, contentObject);
     }
 }
