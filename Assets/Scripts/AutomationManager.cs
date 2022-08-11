@@ -64,5 +64,6 @@ public class AutomationManager : MonoBehaviour
             auto.AddRow(a.GetCategoryName(), a.GetAutomationType(), a.GetAmount());
         }
         TransactionManager.Instance.AddAutomation(TypeName, auto);
+        TypesDropdown.value = 0;
     }
 }
