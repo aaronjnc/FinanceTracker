@@ -9,6 +9,7 @@ public class Transaction
     public double Amount;
     private Category category;
     private string TransactionType;
+    private GameObject transactionRow;
     public delegate void OnCategoryChangeDelegate(Category newCategory);
     public event OnCategoryChangeDelegate OnCategoryChange;
 

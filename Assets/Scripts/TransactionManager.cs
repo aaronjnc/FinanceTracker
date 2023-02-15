@@ -41,6 +41,8 @@ public class TransactionManager : MonoBehaviour
     private int SortingMethod = 0;
     [SerializeField]
     private TMP_Dropdown monthsDropdown;
+    [SerializeField]
+    private TMP_Dropdown unloadMonthDropdown;
     private Row chosenRow;
     [SerializeField]
     private Button RemoveRow;
@@ -48,6 +50,7 @@ public class TransactionManager : MonoBehaviour
     {
         _instance = this;
         monthsDropdown.ClearOptions();
+        unloadMonthDropdown.ClearOptions();
         totalTextBox.text = totalAmount.ToString("C2");
     }
 
@@ -103,6 +106,7 @@ public class TransactionManager : MonoBehaviour
         int i = 0;
         foreach (string key in transactionsDictionary.Keys)
         {
+            Debug.Log(key);
             foreach (Transaction t in transactionsDictionary[key])
             {
                 if (i >= rows.Count)
@@ -119,6 +123,15 @@ public class TransactionManager : MonoBehaviour
             }
         }
     }
+
+    private void DisableRows()
+    {
+        foreach (Row row in rows)
+        {
+            row.Disable();
+        }
+    }
+
     public void AddNewRow()
     {
         GameObject row = Instantiate(TableRow, ScrollParent);
@@ -424,14 +437,29 @@ public class TransactionManager : MonoBehaviour
         monthsDropdown.AddOptions(months);
     }
 
+    public void UnloadMonth()
+    {
+        string monthAndYear = unloadMonthDropdown.options[unloadMonthDropdown.value].text;
+        UnloadMonth(monthAndYear, monthsDropdown.value);
+    }
+
+    public void UnloadMonth(string monthAndYear, int value)
+    {
+        string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
+        SaveInformation.Save();
+        unloadMonthDropdown.options.RemoveAt(value);
+        unloadMonthDropdown.RefreshShownValue();
+        monthsDropdown.AddOptions(new List<string>(){monthAndYear });
+        transactionsDictionary.Remove(yearAndMonth);
+        DisableRows();
+        DisplayTable();
+    }
+
     public void LoadMonth()
     {
         string monthAndYear = monthsDropdown.options[monthsDropdown.value].text;
+
         LoadMonth(monthAndYear, monthsDropdown.value);
-        /*string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
-        monthsDropdown.options.RemoveAt(monthsDropdown.value);
-        monthsDropdown.RefreshShownValue();
-        SaveInformation.LoadMonth(yearAndMonth);*/
     }
 
     private void LoadMonth(string monthAndYear, int value)
@@ -439,6 +467,7 @@ public class TransactionManager : MonoBehaviour
         string yearAndMonth = MonthDropdownList.GetYearAndMonth(monthAndYear);
         monthsDropdown.options.RemoveAt(value);
         monthsDropdown.RefreshShownValue();
+        unloadMonthDropdown.AddOptions(new List<string>() {monthAndYear });
         SaveInformation.LoadMonth(yearAndMonth);
     }
 
